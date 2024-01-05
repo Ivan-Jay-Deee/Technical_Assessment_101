@@ -1,0 +1,71 @@
+----------------------------------------------------------------
+4 A. WRITE A SQL QUERY THAT WILL  CREATE THE TABLES SHOWN BELOW.
+----------------------------------------------------------------
+
+CREATING TABLE: tb_transactions 
+ 
+CREATE TABLE tb_transactions ( 
+    transaction_id	INT NOT NULL PRIMARY KEY,
+    product_id		INT NOT NULL,
+    customer_id		INT NOT NULL,
+    amount		DECIMAL(10,2) NOT NULL,
+    time_stamp		DATETIME NOT NULL
+);
+
+
+INSERT INTO [dbo].[tb_transactions]
+           ([transaction_id]
+           ,[product_id]
+           ,[customer_id]
+           ,[amount]
+	   ,[time_stamp])
+           
+VALUES 
+           (1, 101, 1001, 50,CURRENT_TIMESTAMP),
+	   (2, 102, 1002, 75,CURRENT_TIMESTAMP),
+	   (3, 105, 1005, 30,CURRENT_TIMESTAMP);
+
+
+CREATING TABLE: tb_customers
+
+CREATE TABLE tb_customers ( 
+    customer_id		INT NOT NULL PRIMARY KEY,
+    fname		VARCHAR(255) NOT NULL,
+    address		VARCHAR(255) NOT NULL
+);
+
+
+INSERT INTO [dbo].[tb_customers]
+           ([customer_id]
+           ,[fname]
+           ,[address])
+VALUES
+           (1001, 'Jon Snow', 'Winterfell Northern Realm, Westeros'),
+	   (1002, 'John Doe', 'Kings Landing, Westeros'),
+           (1003, 'Karen Shade', 'Riverrun, Westeros');
+
+----------------------------------------------------------------
+4.B 
+----------------------------------------------------------------
+
+	SELECT AVG(amount) AS average_amount
+	FROM tb_transactions
+	WHERE time_stamp >= '2023-06-01' AND time_stamp < '2023-06-03';
+
+----------------------------------------------------------------
+4.C
+----------------------------------------------------------------
+
+ALTER TABLE tb_transactions
+ADD FOREIGN KEY (customer_id) REFERENCES tb_customers(customer_id);
+
+----------------------------------------------------------------
+4.D
+----------------------------------------------------------------
+SELECT tb_transactions.customer_id, fname, transaction_id, product_id, amount, time_stamp
+FROM tb_transactions
+LEFT JOIN tb_customers ON tb_transactions.customer_id = tb_customers.customer_id
+
+WHERE tb_transactions.customer_id = 1001
+
+
